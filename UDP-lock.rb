@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
 require 'socket'
 
 class UDPLock < UDPSocket
@@ -30,6 +29,17 @@ class UDPLock < UDPSocket
 
 end
 
-lck = UDPLock.new(12344)
-puts lck.inspect
-STDIN.gets
+ports = Array.new
+while ARGV do
+  arg = ARGV.shift
+  break if arg == '--'
+  ports << arg
+end
+
+# TODO(cuzelac): accept more than one port
+lck = UDPLock.new(*ports)
+
+exec *ARGV
+
+
+
