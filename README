@@ -1,0 +1,4 @@
+A ruby gem and shell wrapper that ensures synchronization on a system by binding
+to a UDP socket
+
+This is a work-in-progress.
