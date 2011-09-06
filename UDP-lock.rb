@@ -29,6 +29,7 @@ class UDPLock < UDPSocket
 
 end
 
+# TODO(cuzelac): accept more than one port
 ports = Array.new
 while ARGV do
   arg = ARGV.shift
@@ -36,10 +37,6 @@ while ARGV do
   ports << arg
 end
 
-# TODO(cuzelac): accept more than one port
 lck = UDPLock.new(*ports)
 
 exec *ARGV
-
-
-
