@@ -14,12 +14,15 @@ class UDPLock < UDPSocket
     close_read
   end
 
+  class LockUnavailabile < StandardError
+  end
+
   # TODO(cuzelac): rescue more errors and more inteligent failure forms
   def grab
     begin
       bind(@ip,@port)
     rescue Errno::EADDRINUSE
-      raise Errno::EADDRINUSE, "lock already taken"
+      raise LockUnavailabile, "lock already taken"
     end
   end
 
@@ -37,6 +40,11 @@ while ARGV do
   ports << arg
 end
 
-lck = UDPLock.new(*ports)
+begin
+  lck = UDPLock.new(*ports)
+rescue UDPLock::LockUnavailabile
+  puts "Lock already taken; failing"
+  exit 1
+end
 
 exec *ARGV
